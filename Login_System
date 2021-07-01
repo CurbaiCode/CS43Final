@@ -1,4 +1,4 @@
-# multiply_score.py
+# TicTacToe.py
 
 import wsgiref.simple_server
 import urllib.parse
