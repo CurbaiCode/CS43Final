@@ -1,6 +1,8 @@
 import random
 
-symbols = ["X", "O"]
+sym = ["X", "O"]
+names = ["", ""]
+symbols = ["", ""]
 
 class Game:
 
@@ -29,22 +31,31 @@ class Board:
         print("-+-+-")
         print(self.square["1"] + "|" + self.square["2"] + "|" + self.square["3"])
 
+    def instructions(self):
+        print("How to Play")
+
 
 class Player:
 
     def __init__(self, name, symbol):
         self.name = name
         self.symbol = symbol
+        self.score = 0
 
 
-n1 = input("What's player 1's name? ")
-n2 = input("What's player 2's name? ")
+names[0] = input("What's player 1's name? ")
+names[1] = input("What's player 2's name? ")
 if random.choice(range(2)) == 0:
-    s1 = input("{}, pick a symbol (X/O): ".format(n1))
-    s2 = symbols[int(not bool(symbols.index(s1)))]
+    symbols[0] = input("{}, pick a symbol (X/O): ".format(names[0])).upper()
+    symbols[1] = sym[int(not bool(sym.index(symbols[0])))]
+    currentP = 1
+    nextP = 0
 else:
-    s2 = input("{}, pick a symbol (X/O): ".format(n2))
-    s1 = symbols[int(not bool(symbols.index(s2)))]
+    symbols[1] = input("{}, pick a symbol (X/O): ".format(names[1])).upper()
+    symbols[0] = sym[int(not bool(sym.index(symbols[1])))]
+    currentP = 0
+    nextP = 1
 
-g = Game(n1, s1, n2, s2)
+g = Game(names[0], symbols[0], names[1], symbols[1])
 g.display_board()
+move = input("{}, what's your move? ".format(names[currentP]))
