@@ -61,7 +61,6 @@ class Game:
         else:
             print("An unexpected error has occurred.")
 
-
     def Instructions(self):
         print("""
 Welcome to Tic-Tac-Toe!
@@ -245,13 +244,14 @@ while True:
     G.MakeMove()
     if G.IsWon():
         G.DisplayBoard()
-        print("{} wins!".format(G.Cur.Name))
+        print("\n{} wins!".format(G.Cur.Name))
         G.DisplayScores()
         if G.IsOver():
             break
+
     elif G.IsDraw():
         G.DisplayBoard()
-        print("Draw!")
+        print("\nDraw!")
         G.DisplayScores()
         if G.IsOver():
             break
