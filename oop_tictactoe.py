@@ -5,6 +5,7 @@ symbols = ["X", "O"]
 class Game:
 
     def __init__(self):
+        self.menu()
         self.board = Board()
         self.p1 = Player(0)
         self.p2 = Player(1)
@@ -19,11 +20,103 @@ class Game:
             self.cur = self.p1
             self.next = self.p2
 
+    def validSelection(self, selection):
+        if selection in map(str, range(4)):
+            return True
+
+        return False
+
     def displayBoard(self):
         self.board.display()
 
+    def menu(self):
+        global symbols
+        print("""{}{}{}{}{}{} {}{}       {}{}{}{}{}{}            {}{}{}{}{}{}            
+  {}{}              {}{}                {}{}         {}{}{}{} 
+  {}{}   {}{}  {}{}{}{}   {}{}  {}{}{} {}  {}{}{}{}   {}{}  {}{}{}{}  {}{}  {}{}
+  {}{}   {}{} {}{}      {}{} {}{}  {}{} {}{}      {}{} {}{}  {}{} {}{}{}{}  
+  {}{}   {}{}  {}{}{}{}   {}{}  {}{}{} {}  {}{}{}{}   {}{}  {}{}{}{}   {}{}{}{}{}
+
+                  1) Start Game  
+                  2) How To Play 
+                  3) Exit        
+""".format(symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[1], symbols[1], symbols[1], symbols[1], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[1], symbols[1], symbols[0], symbols[0], symbols[1], symbols[1], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[1], symbols[1], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[1], symbols[1], symbols[0], symbols[0], symbols[1], symbols[1], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0]))
+        selection = input("Select an option: ")
+        while self.validSelection(selection) is False:
+            selection = input("Please select an option from the menu above: ")
+
+        if selection == "1":
+            return
+        elif selection == "2":
+            self.instructions()
+            return
+        elif selection == "3":
+            raise SystemExit
+        elif selection == "0":
+            print()
+            print("You found an Easter Egg!")
+            symbols = input("Enter new symbols separated by a space e.g. \"X O\": ").upper().split(" ")
+            print()
+            self.menu()
+        else:
+            print("An unexpected error has occurred.")
+
+
     def instructions(self):
-        print("How to Play")
+        print("""
+Welcome to Tic-Tac-Toe!
+
+##/ The Screen /#########################
+
+                     You can place a 
+         symbol in this empty square 
+      /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+     /   You can't move in 
+    /   an occupied square 
+   / /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯       7|8|9 
+{}̲| |{}                             -+-+- 
+-+-+-    The board is laid out    4|5|6 
+ |{}̲|{}    like a numeric keypad  / -+-+- 
+-+-+- <¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  1|2|3 
+{}|{}|{}̲ 
+     \        When the game is won, the 
+      \  winning symbols are underlined 
+       ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Press ENTER to continue... """.format(symbols[0], symbols[1], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0]), end="")
+        input()
+        print("""
+##/ Instructions /######################
+The goal of Tic-Tac-Toe is to be the    
+first player to get three of your       
+symbols in a row on the board.          
+
+Press ENTER to continue... """, end="")
+        input()
+        print("""
+Players alternate placing {}s and {}s on  
+the board until either player has three 
+in a row, across, down, or diagonally   
+or until all squares on the board are   
+filled. If a player is able to place    
+three {}s or three {}s in a row, then     
+that player wins. If all squares are    
+filled and neither player has made a    
+complete row of {}s or {}s, then the game 
+is a draw.                              
+
+Press ENTER to continue... """.format(symbols[0], symbols[1], symbols[0], symbols[1], symbols[0], symbols[1]), end="")
+        input()
+        print("""
+Players make their moves by entering       
+the number that corresponds with the      
+square they wish to place their symbol    
+in. Players can not place their symbol in 
+a square which is occupied by any symbol, 
+whether it is their own or not.           
+
+Press ENTER to start! """, end="")
+        input()
+        print()
 
     def makeMove(self, player, square):
         while self.board.update(player.sym, square) is None:
@@ -37,8 +130,24 @@ class Game:
     def isDraw(self):
         return self.board.noMoves()
 
+    def scoreboard(self):
+        print("""
+    ================================    
+               SCOREBOARD               
+    ================================    
+        {:<16} {:<}        
+        {:<16} {:<7}        
+    ================================    """.format(self.p1.name, self.p1.score, self.p2.name, self.p2.score))
+
     def switchTurns(self):
         self.cur, self.next = self.next, self.cur
+
+    def isOver(self):
+        if self.board.donePlaying() is False:
+            self.board.reset()
+            return False
+
+        return True
 
 
 class Board:
@@ -58,14 +167,14 @@ class Board:
         print("-+-+-")
         print(self.squares["1"] + "|" + self.squares["2"] + "|" + self.squares["3"])
 
-    def squareEmpty(self, square):
+    def validSquare(self, square):
         if square in self.squares and self.squares[square] == " ":
             return True
 
         return False
 
     def update(self, symbol, square):
-        if self.squareEmpty(square):
+        if self.validSquare(square):
             self.squares[square] = symbol
             return self.squares
 
@@ -84,6 +193,8 @@ class Board:
         ]
         for x, y, z in possibleWins:
             if self.squares[x] == self.squares[y] == self.squares[z] == player.sym:
+                self.squares[x] = self.squares[y] = self.squares[z] = (player.sym + "̲")
+                player.score += 1
                 return True
 
         return False
@@ -94,6 +205,16 @@ class Board:
                 return False
 
         return True
+
+    def donePlaying(self):
+        print()
+        return not input("Do you want to play again? (Yes/No): ").lower().startswith("y")
+
+    def reset(self):
+        for square in self.squares:
+            self.squares[square] = " "
+
+        return self.squares
 
 
 class Player:
@@ -112,7 +233,7 @@ class Player:
     def setSymbol(self):
         symbol = input("{}, pick a symbol ({}/{}): ".format(self.name, symbols[0], symbols[1])).upper()
         while self.validSymbol(symbol) is False:
-            symbol = input("That's not a valid symbol {}, pick \"{}\" or \"{}\": ".format(self.name, symbols[0], symbols[1])).upper()
+            symbol = input("{}, please pick \"{}\" or \"{}\": ".format(self.name, symbols[0], symbols[1])).upper()
 
         self.sym = symbol
 
@@ -125,10 +246,14 @@ while True:
     if g.isWon(g.cur):
         g.displayBoard()
         print("{} wins!".format(g.cur.name))
-        break
+        g.scoreboard()
+        if g.isOver():
+            break
     elif g.isDraw():
         g.displayBoard()
         print("Draw!")
-        break
+        g.scoreboard()
+        if g.isOver():
+            break
 
     g.switchTurns()
