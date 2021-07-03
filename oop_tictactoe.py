@@ -7,8 +7,8 @@ class Game:
     def __init__(self):
         self.menu()
         self.board = Board()
-        self.p1 = Player(0)
-        self.p2 = Player(1)
+        self.p1 = Player(1)
+        self.p2 = Player(2)
         if random.choice(range(2)) == 0:
             self.p1.setSymbol()
             self.p2.sym = symbols[int(not bool(symbols.index(self.p1.sym)))]
@@ -31,16 +31,16 @@ class Game:
 
     def menu(self):
         global symbols
-        print("""{}{}{}{}{}{} {}{}       {}{}{}{}{}{}            {}{}{}{}{}{}            
-  {}{}              {}{}                {}{}         {}{}{}{} 
-  {}{}   {}{}  {}{}{}{}   {}{}  {}{}{} {}  {}{}{}{}   {}{}  {}{}{}{}  {}{}  {}{}
-  {}{}   {}{} {}{}      {}{} {}{}  {}{} {}{}      {}{} {}{}  {}{} {}{}{}{}  
-  {}{}   {}{}  {}{}{}{}   {}{}  {}{}{} {}  {}{}{}{}   {}{}  {}{}{}{}   {}{}{}{}{}
+        print("""{0}{0}{0}{0}{0}{0} {1}{1}       {1}{1}{1}{1}{1}{1}            {0}{0}{0}{0}{0}{0}            
+  {0}{0}              {1}{1}                {0}{0}         {0}{0}{0}{0} 
+  {0}{0}   {1}{1}  {0}{0}{0}{0}   {1}{1}  {0}{0}{0} {0}  {1}{1}{1}{1}   {0}{0}  {1}{1}{1}{1}  {0}{0}  {0}{0}
+  {0}{0}   {1}{1} {0}{0}      {1}{1} {0}{0}  {0}{0} {1}{1}      {0}{0} {1}{1}  {1}{1} {0}{0}{0}{0}  
+  {0}{0}   {1}{1}  {0}{0}{0}{0}   {1}{1}  {0}{0}{0} {0}  {1}{1}{1}{1}   {0}{0}  {1}{1}{1}{1}   {0}{0}{0}{0}{0}
 
                   1) Start Game  
                   2) How To Play 
                   3) Exit        
-""".format(symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[1], symbols[1], symbols[1], symbols[1], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[1], symbols[1], symbols[0], symbols[0], symbols[1], symbols[1], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[1], symbols[1], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[1], symbols[1], symbols[1], symbols[1], symbols[0], symbols[0], symbols[1], symbols[1], symbols[1], symbols[1], symbols[0], symbols[0], symbols[0], symbols[0], symbols[0]))
+""".format(symbols[0], symbols[1]))
         selection = input("Select an option: ")
         while self.validSelection(selection) is False:
             selection = input("Please select an option from the menu above: ")
@@ -74,15 +74,15 @@ Welcome to Tic-Tac-Toe!
      /   You can't move in 
     /   an occupied square 
    / /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯       7|8|9 
-{}̲| |{}                             -+-+- 
+{0}̲| |{1}                             -+-+- 
 -+-+-    The board is laid out    4|5|6 
- |{}̲|{}    like a numeric keypad  / -+-+- 
+ |{0}̲|{0}    like a numeric keypad  / -+-+- 
 -+-+- <¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  1|2|3 
-{}|{}|{}̲ 
+{1}|{1}|{0}̲ 
      \        When the game is won, the 
       \  winning symbols are underlined 
        ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-Press ENTER to continue... """.format(symbols[0], symbols[1], symbols[0], symbols[0], symbols[1], symbols[1], symbols[0]), end="")
+Press ENTER to continue... """.format(symbols[0], symbols[1]), end="")
         input()
         print("""
 ##/ Instructions /######################
@@ -93,18 +93,18 @@ symbols in a row on the board.
 Press ENTER to continue... """, end="")
         input()
         print("""
-Players alternate placing {}s and {}s on  
+Players alternate placing {0}s and {1}s on  
 the board until either player has three 
 in a row, across, down, or diagonally   
 or until all squares on the board are   
 filled. If a player is able to place    
-three {}s or three {}s in a row, then     
+three {0}s or three {1}s in a row, then     
 that player wins. If all squares are    
 filled and neither player has made a    
-complete row of {}s or {}s, then the game 
+complete row of {0}s or {1}s, then the game 
 is a draw.                              
 
-Press ENTER to continue... """.format(symbols[0], symbols[1], symbols[0], symbols[1], symbols[0], symbols[1]), end="")
+Press ENTER to continue... """.format(symbols[0], symbols[1]), end="")
         input()
         print("""
 Players make their moves by entering       
@@ -132,12 +132,12 @@ Press ENTER to start! """, end="")
 
     def scoreboard(self):
         print("""
-    ================================    
-               SCOREBOARD               
-    ================================    
-        {:<16} {:<}        
-        {:<16} {:<7}        
-    ================================    """.format(self.p1.name, self.p1.score, self.p2.name, self.p2.score))
+================================
+           SCOREBOARD           
+================================
+    {:<16} {:<7}    
+    {:<16} {:<7}    
+================================""".format(self.p1.name, self.p1.score, self.p2.name, self.p2.score))
 
     def switchTurns(self):
         self.cur, self.next = self.next, self.cur
@@ -220,7 +220,7 @@ class Board:
 class Player:
 
     def __init__(self, number):
-        self.name = input("What's player {}'s name? ".format(str(number + 1)))
+        self.name = input("What's player {}'s name? ".format(number))
         self.sym = ""
         self.score = 0
 
