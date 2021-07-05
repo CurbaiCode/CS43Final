@@ -1,35 +1,38 @@
+# Imports
 import random
 
+# Constants
 Symbols = ["X", "O"]
 
+# Classes
 class Game:
 
     def __init__(self):
-        self.Menu()
-        self.Board = Board()
-        self.P1 = Player(1)
-        self.P2 = Player(2)
-        if random.choice(range(2)) == 0:
-            self.P1.SetSymbol()
-            self.P2.Sym = Symbols[int(not bool(Symbols.index(self.P1.Sym)))]
-            self.Cur = self.P2
-            self.Next = self.P1
+        self.Menu()  # Display main menu
+        self.Board = Board()  # Create 3x3 board
+        self.P1 = Player(1)  # Create Player 1
+        self.P2 = Player(2)  # Create Player 2
+        if random.choice(range(2)) == 0:  # Randomly select player
+            self.P1.SetSymbol()  # Ask player for symbol
+            self.P2.Sym = Symbols[int(not bool(Symbols.index(self.P1.Sym)))]  # Assign the other symbol
+            self.Cur = self.P2  # Set which player is the current player
+            self.Next = self.P1  # The other player is up next
         else:
-            self.P2.SetSymbol()
-            self.P1.Sym = Symbols[int(not bool(Symbols.index(self.P2.Sym)))]
-            self.Cur = self.P1
-            self.Next = self.P2
+            self.P2.SetSymbol()  # Ask player for symbol
+            self.P1.Sym = Symbols[int(not bool(Symbols.index(self.P2.Sym)))]  # Assign the other symbol
+            self.Cur = self.P1  # Set which player is the current player
+            self.Next = self.P2  # The other player is up next
 
     def ValidSelection(self, Selection):
-        if Selection in map(str, range(4)):
-            return True
+        if Selection in map(str, range(4)):  # If the player chose a number between 0 and 3
+            return True  # Selection is valid
 
-        return False
+        return False  # Selection is invalid
 
     def DisplayBoard(self):
         self.Board.Display()
 
-    def Menu(self):
+    def Menu(self):  # Main menu
         global Symbols
         print("""{0}{0}{0}{0}{0}{0} {1}{1}       {1}{1}{1}{1}{1}{1}            {0}{0}{0}{0}{0}{0}            
   {0}{0}              {1}{1}                {0}{0}         {0}{0}{0}{0} 
@@ -40,24 +43,25 @@ class Game:
                   1) Start Game  
                   2) How To Play 
                   3) Exit        
-""".format(Symbols[0], Symbols[1]))
-        Selection = input("Select an option: ")
-        while self.ValidSelection(Selection) is False:
-            Selection = input("Please select an option from the menu above: ")
+""".format(Symbols[0], Symbols[1]))  # Title and menu
+        Selection = input("Select an option: ")  # Get selection
+        while self.ValidSelection(Selection) is False:  # Validate selection
+            Selection = input("Please select an option from the menu above: ")  # If selection is invalid
 
-        if Selection == "1":
+        # If move is valid
+        if Selection == "1":  # "Start Game"
             return
-        elif Selection == "2":
-            self.Instructions()
+        elif Selection == "2":  # "How To Play"
+            self.Instructions()  # Show instructions before starting the game
             return
-        elif Selection == "3":
+        elif Selection == "3":  # "Exit"
             raise SystemExit
-        elif Selection == "0":
+        elif Selection == "0":  # Easter Egg
             print()
             print("You found an Easter Egg!")
-            Symbols = input("Enter new symbols separated by a space e.g. \"X O\": ").upper().split(" ")
+            Symbols = input("Enter new symbols separated by a space e.g. \"X O\": ").upper().split(" ")  # Redefine "Symbols" constant
             print()
-            self.Menu()
+            self.Menu()  # Go back to main menu
         else:
             print("An unexpected error has occurred.")
 
@@ -118,17 +122,17 @@ Press ENTER to start! """, end="")
         print()
 
     def MakeMove(self):
-        Square = input("{}, what's your move? ".format(self.Cur.Name))
-        while self.Board.Update(self.Cur.Sym, Square) is None:
-            Square = input("Sorry {}, you can't move there. Try again: ".format(self.Cur.Name))
+        Square = input("{}, what's your move? ".format(self.Cur))  # Ask player for move
+        while self.Board.Update(self.Cur.Sym, Square) is None:  # Validate move
+            Square = input("Sorry {}, you can't move there. Try again: ".format(self.Cur))  # If move is invalid
 
-        return self.Board.Update(self.Cur.Sym, Square)
+        return self.Board.Update(self.Cur.Sym, Square)  # If move is valid
 
     def IsWon(self):
-        return self.Board.IsWinner(self.Cur)
+        return self.Board.IsWinner(self.Cur)  # Determine if current player is the winner
 
     def IsDraw(self):
-        return self.Board.NoMoves()
+        return self.Board.NoMoves()  # Determine if there are no more valid moves left
 
     def DisplayScores(self):
         print("""
@@ -137,17 +141,17 @@ Press ENTER to start! """, end="")
 ================================
     {:<16} {:<7}    
     {:<16} {:<7}    
-================================""".format(self.P1.Name, self.P1.Score, self.P2.Name, self.P2.Score))
+================================""".format(self.P1, self.P1.Score, self.P2, self.P2.Score))
 
     def SwitchTurn(self):
-        self.Cur, self.Next = self.Next, self.Cur
+        self.Cur, self.Next = self.Next, self.Cur  # Make the current player next and the next player current
 
     def IsOver(self):
-        if self.Board.DonePlaying() is False:
+        if self.Board.DonePlaying() is False:  # If the players are not done playing
             self.Board.Reset()
-            return False
+            return False  # The game is not over
 
-        return True
+        return True  # The game is over
 
 
 class Board:
@@ -157,9 +161,9 @@ class Board:
             "7": " ", "8": " ", "9": " ",
             "4": " ", "5": " ", "6": " ",
             "1": " ", "2": " ", "3": " "
-        }
+        }  # Create a blank 3x3 board with the correct key equivalents
 
-    def Display(self):
+    def Display(self):  # Display the board
         print()
         print(self.Squares["7"] + "|" + self.Squares["8"] + "|" + self.Squares["9"])
         print("-+-+-")
@@ -168,19 +172,19 @@ class Board:
         print(self.Squares["1"] + "|" + self.Squares["2"] + "|" + self.Squares["3"])
 
     def ValidSquare(self, Square):
-        if Square in self.Squares and self.Squares[Square] == " ":
-            return True
+        if Square in self.Squares and self.Squares[Square] == " ":  # If the given square exists and is blank
+            return True  # Square is valid move
 
-        return False
+        return False  # Square is invalid move
 
-    def Update(self, Symbol, Square):
-        if self.ValidSquare(Square):
-            self.Squares[Square] = Symbol
-            return self.Squares
+    def Update(self, Symbol, Square):  # Update the state of the board with the given move
+        if self.ValidSquare(Square):  # If the move is valid
+            self.Squares[Square] = Symbol  # Place the player's symbol on the board in the correct square
+            return self.Squares  # Return the layout of the board
 
         return None
 
-    def IsWinner(self, Player):
+    def IsWinner(self, Player):  # Determine if the given player is the winner
         PossibleWins = [
             ["7", "8", "9"],
             ["4", "5", "6"],
@@ -190,70 +194,74 @@ class Board:
             ["9", "6", "3"],
             ["7", "5", "3"],
             ["1", "5", "9"]
-        ]
-        for X, Y, Z in PossibleWins:
-            if self.Squares[X] == self.Squares[Y] == self.Squares[Z] == Player.Sym:
-                self.Squares[X] = self.Squares[Y] = self.Squares[Z] = (Player.Sym + "̲")
-                Player.Score += 1
-                return True
+        ]  # All possible ways to win
+        for X, Y, Z in PossibleWins:  # For each square in every possible win
+            if self.Squares[X] == self.Squares[Y] == self.Squares[Z] == Player.Sym:  # If all squares in a row contain the player's symbol
+                self.Squares[X] = self.Squares[Y] = self.Squares[Z] = (Player.Sym + "̲")  # Mark the symbols with an underline
+                Player.Score += 1  # Add the win to the player's score
+                return True  # The player has won
 
-        return False
+        return False  # The player hasn't won
 
-    def NoMoves(self):
+    def NoMoves(self):  # Determine if the are no more empty squares on the board
         for Square in self.Squares:
-            if self.Squares[Square] == " ":
-                return False
+            if self.Squares[Square] == " ":  # If any square is blank
+                return False  # There are still possible moves
 
-        return True
+        return True  # The board is completely full
 
-    def DonePlaying(self):
+    def DonePlaying(self):  # Ask if the players want to play another round
         print()
         return not input("Do you want to play again? (Yes/No): ").upper().startswith("Y")
 
-    def Reset(self):
+    def Reset(self):  # Clear the board
         for Square in self.Squares:
-            self.Squares[Square] = " "
+            self.Squares[Square] = " "  # Make all the squares blank
 
-        return self.Squares
+        return self.Squares  # Return the layout of the board
 
 
 class Player:
 
     def __init__(self, Number):
-        self.Name = input("What's player {}'s name? ".format(Number))
-        self.Sym = ""
-        self.Score = 0
+        self.Name = input("What's player {}'s name? ".format(Number))  # Ask for player name
+        self.Sym = ""  # Initialize the player's symbol
+        self.Score = 0  # Set the score to 0 wins
+
+    def __str__(self):
+        return self.Name  # Return player's name when referenced without properties
 
     def ValidSymbol(self, Symbol):
-        if Symbol in Symbols:
-            return True
+        if Symbol in Symbols:  # If given symbol is in "Symbols" constant
+            return True  # The symbol is valid
 
-        return False
+        return False  # The symbol is invalid
 
     def SetSymbol(self):
-        Symbol = input("{}, pick a symbol ({}/{}): ".format(self.Name, Symbols[0], Symbols[1])).upper()
-        while self.ValidSymbol(Symbol) is False:
-            Symbol = input("{}, please pick \"{}\" or \"{}\": ".format(self.Name, Symbols[0], Symbols[1])).upper()
+        Symbol = input("{}, pick a symbol ({}/{}): ".format(self.Name, Symbols[0], Symbols[1])).upper()  # Ask for symbol
+        while self.ValidSymbol(Symbol) is False:  # Validate symbol
+            Symbol = input("{}, please pick \"{}\" or \"{}\": ".format(self.Name, Symbols[0], Symbols[1])).upper()  # If symbol is invalid
 
-        self.Sym = Symbol
+        self.Sym = Symbol  # If symbol is valid
 
 
-G = Game()
+# Main
+G = Game()  # Create new game
 while True:
     G.DisplayBoard()
-    G.MakeMove()
-    if G.IsWon():
+    G.MakeMove()  # Ask for player's move
+    if G.IsWon():  # Check for win
         G.DisplayBoard()
-        print("\n{} wins!".format(G.Cur.Name))
-        G.DisplayScores()
-        if G.IsOver():
-            break
+        print("\n{} wins!".format(G.Cur))
+        G.DisplayScores()  # Show scoreboard
+        if G.IsOver():  # Ask if done playing after game is won
+            break  # End game
 
-    elif G.IsDraw():
+    elif G.IsDraw():  # Check for draw
         G.DisplayBoard()
         print("\nDraw!")
-        G.DisplayScores()
-        if G.IsOver():
-            break
+        G.DisplayScores()  # Show scoreboard
+        if G.IsOver():  # Ask if done playing after draw
+            break  # End game
 
     G.SwitchTurn()
