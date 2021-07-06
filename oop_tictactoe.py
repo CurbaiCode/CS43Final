@@ -76,7 +76,7 @@ def Multiplayer():
     return input("Would you like to play against a friend? (Yes/No): ").upper().startswith("Y")  # Ask if multiplayer
 
 def DonePlaying():  # Ask if the players want to play another round
-    return not input("\nDo you want to play again? (Yes/No): ").upper().startswith("Y")
+    return input("\nDo you want to play again? (Yes/No): ").upper().startswith("N")
 
 # Classes
 class Game:
