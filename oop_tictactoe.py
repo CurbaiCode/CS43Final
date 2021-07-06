@@ -22,20 +22,20 @@ Welcome to Tic-Tac-Toe!
 
 ##/ The Screen /#########################
 
-                 You can place a 
-     symbol in this empty square 
-  /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
- /   You can't move in 
-/   an occupied square 
-/ /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯       7|8|9 
-{0}̲| |{1}                             -+-+- 
--+-+-    The board is laid out    4|5|6 
-|{0}̲|{0}    like a numeric keypad  / -+-+- 
--+-+- <¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  1|2|3 
-{1}|{1}|{0}̲ 
- \        When the game is won, the 
-  \  winning symbols are underlined 
-   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                        You can place a 
+            symbol in this empty square 
+         /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        /     You can't move in 
+       /     an occupied square 
+      /   /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯         7 | 8 | 9  
+ {0}̲ |   | {1}                              ---+---+--- 
+---+---+---    The board is laid out     4 | 5 | 6  
+   | {0}̲ | {0}     like a numeric keypad  / ---+---+--- 
+---+---+--- <¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   1 | 2 | 3  
+ {1} | {1} | {0}̲  
+          \        When the game is won, the 
+           \  winning symbols are underlined 
+            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 Press ENTER to continue... """.format(Symbols[0], Symbols[1]), end="")
     input()
     print("""
@@ -198,11 +198,11 @@ class Board:
 
     def Display(self):  # Display the board
         print()
-        print(self.Squares["7"] + "|" + self.Squares["8"] + "|" + self.Squares["9"])
-        print("-+-+-")
-        print(self.Squares["4"] + "|" + self.Squares["5"] + "|" + self.Squares["6"])
-        print("-+-+-")
-        print(self.Squares["1"] + "|" + self.Squares["2"] + "|" + self.Squares["3"])
+        print(" {} | {} | {} ".format(self.Squares["7"], self.Squares["8"], self.Squares["9"]))
+        print("---+---+---")
+        print(" {} | {} | {} ".format(self.Squares["4"], self.Squares["5"], self.Squares["6"]))
+        print("---+---+---")
+        print(" {} | {} | {} ".format(self.Squares["1"], self.Squares["2"], self.Squares["3"]))
 
     def ValidSquare(self, Square):
         if Square in self.Squares and self.Squares[Square] == " ":  # If the given square exists and is blank
