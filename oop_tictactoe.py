@@ -244,6 +244,50 @@ class Player:
 
         self.Sym = Symbol  # If symbol is valid
 
+class Computer:
+    
+    def __init__(self):
+        self.Name =  input("What is the computer's name?") # Ask for computer's name
+        self.Sym = ""  # Initialize the computer's symbol
+        self.Score = 0  # Set the score to 0 wins
+
+    def __str__(self):
+        return self.Name  # Return computer's name when referenced without properties
+    
+    def SetSymbol(self, Symbol): 
+        if Player.Sym == "X" # Checks the player's symbol
+            self.Sym = "O"
+        else:
+            self.Sym = "X"
+            
+   def getComputerMove(board, computerLetter):
+    
+    for i in range(1, 10):
+        copy = getBoardCopy(board) # Looks at the Board
+        if isSpaceFree(copy, i):
+            makeMove(copy, computerLetter, i)
+            if isWinner(copy, computerLetter):
+                return i
+
+    # Check if the player could win on his next move, and block them.
+    for i in range(1, 10):
+        copy = getBoardCopy(board)
+        if isSpaceFree(copy, i):
+            makeMove(copy, playerLetter, i)
+            if isWinner(copy, playerLetter):
+                return i
+
+    
+    move = chooseRandomMoveFromList(board, [1, 3, 7, 9])
+    if move != None:
+        return move # Tries to take one of the corners.
+
+    
+    if isSpaceFree(board, 5): 
+        return 5 # Tries to take the center.
+
+    
+    return chooseRandomMoveFromList(board, [2, 4, 6, 8]) # If the computer cannot take the center or any corners, goes to one of the sides
 
 # Main
 G = Game()  # Create new game
