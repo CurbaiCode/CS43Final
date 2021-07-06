@@ -2,8 +2,6 @@
 import random
 
 # Constants
-import sys
-
 Symbols = ["X", "O"]
 PossibleWins = [
     ["7", "8", "9"],
