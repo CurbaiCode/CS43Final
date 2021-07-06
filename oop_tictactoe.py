@@ -15,13 +15,77 @@ PossibleWins = [
 ]  # All possible ways to win
 CPU = "The Computer"
 
+# Functions
+def Instructions():
+    print("""
+Welcome to Tic-Tac-Toe!
+
+##/ The Screen /#########################
+
+                 You can place a 
+     symbol in this empty square 
+  /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+ /   You can't move in 
+/   an occupied square 
+/ /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯       7|8|9 
+{0}̲| |{1}                             -+-+- 
+-+-+-    The board is laid out    4|5|6 
+|{0}̲|{0}    like a numeric keypad  / -+-+- 
+-+-+- <¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  1|2|3 
+{1}|{1}|{0}̲ 
+ \        When the game is won, the 
+  \  winning symbols are underlined 
+   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+Press ENTER to continue... """.format(Symbols[0], Symbols[1]), end="")
+    input()
+    print("""
+##/ Instructions /######################
+The goal of Tic-Tac-Toe is to be the    
+first player to get three of your       
+symbols in a row on the board.          
+
+Press ENTER to continue... """, end="")
+    input()
+    print("""
+Players alternate placing {0}s and {1}s on  
+the board until either player has three 
+in a row, across, down, or diagonally   
+or until all squares on the board are   
+filled. If a player is able to place    
+three {0}s or three {1}s in a row, then     
+that player wins. If all squares are    
+filled and neither player has made a    
+complete row of {0}s or {1}s, then the game 
+is a draw.                              
+
+Press ENTER to continue... """.format(Symbols[0], Symbols[1]), end="")
+    input()
+    print("""
+Players make their moves by entering       
+the number that corresponds with the      
+square they wish to place their symbol    
+in. Players can not place their symbol in 
+a square which is occupied by any symbol, 
+whether it is their own or not.           
+
+Press ENTER to start! """, end="")
+    input()
+    print()
+
+def Multiplayer():
+    return input("Would you like to play against a friend? (Yes/No): ").upper().startswith("Y")  # Ask if multiplayer
+
+def DonePlaying():  # Ask if the players want to play another round
+    print()
+    return not input("Do you want to play again? (Yes/No): ").upper().startswith("Y")
+
 # Classes
 class Game:
 
     def __init__(self):
         self.Menu()  # Display main menu
         self.Board = Board()  # Create 3x3 board
-        MultiP = self.Multiplayer()  # Ask if single or multiplayer
+        MultiP = Multiplayer()  # Ask if single or multiplayer
         if MultiP:
             self.P1 = Player(1)  # Create Player 1
             self.P2 = Player(2)  # Create Player 2
@@ -73,7 +137,7 @@ class Game:
         if Selection == "1":  # "Start Game"
             return
         elif Selection == "2":  # "How To Play"
-            self.Instructions()  # Show instructions before starting the game
+            Instructions()  # Show instructions before starting the game
             return
         elif Selection == "3":  # "Exit"
             raise SystemExit
@@ -85,65 +149,6 @@ class Game:
             self.Menu()  # Go back to main menu
         else:
             print("An unexpected error has occurred.")
-
-    def Instructions(self):
-        print("""
-Welcome to Tic-Tac-Toe!
-
-##/ The Screen /#########################
-
-                     You can place a 
-         symbol in this empty square 
-      /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-     /   You can't move in 
-    /   an occupied square 
-   / /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯       7|8|9 
-{0}̲| |{1}                             -+-+- 
--+-+-    The board is laid out    4|5|6 
- |{0}̲|{0}    like a numeric keypad  / -+-+- 
--+-+- <¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  1|2|3 
-{1}|{1}|{0}̲ 
-     \        When the game is won, the 
-      \  winning symbols are underlined 
-       ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-Press ENTER to continue... """.format(Symbols[0], Symbols[1]), end="")
-        input()
-        print("""
-##/ Instructions /######################
-The goal of Tic-Tac-Toe is to be the    
-first player to get three of your       
-symbols in a row on the board.          
-
-Press ENTER to continue... """, end="")
-        input()
-        print("""
-Players alternate placing {0}s and {1}s on  
-the board until either player has three 
-in a row, across, down, or diagonally   
-or until all squares on the board are   
-filled. If a player is able to place    
-three {0}s or three {1}s in a row, then     
-that player wins. If all squares are    
-filled and neither player has made a    
-complete row of {0}s or {1}s, then the game 
-is a draw.                              
-
-Press ENTER to continue... """.format(Symbols[0], Symbols[1]), end="")
-        input()
-        print("""
-Players make their moves by entering       
-the number that corresponds with the      
-square they wish to place their symbol    
-in. Players can not place their symbol in 
-a square which is occupied by any symbol, 
-whether it is their own or not.           
-
-Press ENTER to start! """, end="")
-        input()
-        print()
-
-    def Multiplayer(self):
-        return input("Would you like to play against a friend? (Yes/No): ").upper().startswith("Y")  # Ask if multiplayer
 
     def MakeMove(self):
         if self.Cur.Name == CPU:  # If the computer is making a move
@@ -175,7 +180,7 @@ Press ENTER to start! """, end="")
         self.Cur, self.Next = self.Next, self.Cur  # Make the current player next and the next player current
 
     def IsOver(self):
-        if self.Board.DonePlaying() is False:  # If the players are not done playing
+        if DonePlaying() is False:  # If the players are not done playing
             self.Board.Reset()
             return False  # The game is not over
 
@@ -227,10 +232,6 @@ class Board:
                 return False  # There are still possible moves
 
         return True  # The board is completely full
-
-    def DonePlaying(self):  # Ask if the players want to play another round
-        print()
-        return not input("Do you want to play again? (Yes/No): ").upper().startswith("Y")
 
     def Reset(self):  # Clear the board
         for Square in self.Squares:
@@ -303,9 +304,9 @@ class Computer:
 
     def RandomMove(self, Squares, MoveList):  # Generate a random move from a given list
         PossibleMoves = []
-        for I in MoveList:  # Create new list from "MoveList" excluding impossible moves
-            if self.ValidSquare(Squares, I):
-                PossibleMoves.append(I)
+        for Move in MoveList:  # Create new list from "MoveList" excluding impossible moves
+            if self.ValidSquare(Squares, Move):
+                PossibleMoves.append(Move)
 
         if len(PossibleMoves) != 0:
             return random.choice(PossibleMoves)
@@ -313,19 +314,19 @@ class Computer:
             return None
 
     def ComputerMove(self, Squares, S1):
-        for I in Squares:  # First, check if the computer can win in the next move
+        for Square in Squares:  # First, check if the computer can win in the next move
             Copy = dict(Squares)
-            if self.ValidSquare(Copy, I):
-                self.SimulateMove(Copy, self.Sym, I)
+            if self.ValidSquare(Copy, Square):
+                self.SimulateMove(Copy, self.Sym, Square)
                 if self.SimulateWinner(Copy, self.Sym):
-                    return I
+                    return Square
 
-        for I in Squares:  # Check if the player could win on his next move, and block them
+        for Square in Squares:  # Check if the player could win on his next move, and block them
             Copy = dict(Squares)
-            if self.ValidSquare(Copy, I):
-                self.SimulateMove(Copy, S1, I)
+            if self.ValidSquare(Copy, Square):
+                self.SimulateMove(Copy, S1, Square)
                 if self.SimulateWinner(Copy, S1):
-                    return I
+                    return Square
 
         Move = self.RandomMove(Squares, ["1", "3", "7", "9"])
         if Move is not None:
@@ -334,7 +335,7 @@ class Computer:
         if self.ValidSquare(Squares, "5"):
             return "5"  # Tries to take the center
 
-        return self.RandomMove(Squares, ["2", "4", "6", "8"]) # Tries to take one of the sides
+        return self.RandomMove(Squares, ["2", "4", "6", "8"])  # Tries to take one of the sides
 
 
 # Main
