@@ -2,6 +2,8 @@
 import random
 
 # Constants
+import sys
+
 Symbols = ["X", "O"]
 PossibleWins = [
     ["7", "8", "9"],
@@ -150,7 +152,7 @@ class Game:
                     Symbols = input("Enter new symbols separated by a space e.g. \"X O\": ").upper().split(" ")  # Redefine "Symbols" constant
                     Symbols = [Symbol[0] for Symbol in Symbols]  # Get first character of each string
                     self.Menu()  # Go back to main menu
-                except:
+                except Exception:
                     pass
 
         else:
