@@ -3,6 +3,17 @@ import random
 
 # Constants
 Symbols = ["X", "O"]
+PossibleWins = [
+    ["7", "8", "9"],
+    ["4", "5", "6"],
+    ["1", "2", "3"],
+    ["7", "4", "1"],
+    ["8", "5", "2"],
+    ["9", "6", "3"],
+    ["7", "5", "3"],
+    ["1", "5", "9"]
+]  # All possible ways to win
+CPU = "The Computer"
 
 # Classes
 class Game:
@@ -10,16 +21,26 @@ class Game:
     def __init__(self):
         self.Menu()  # Display main menu
         self.Board = Board()  # Create 3x3 board
-        self.P1 = Player(1)  # Create Player 1
-        self.P2 = Player(2)  # Create Player 2
-        if random.choice(range(2)) == 0:  # Randomly select player
+        MultiP = self.Multiplayer()  # Ask if single or multiplayer
+        if MultiP:
+            self.P1 = Player(1)  # Create Player 1
+            self.P2 = Player(2)  # Create Player 2
+            if random.choice(range(2)) == 0:  # Randomly select player
+                self.P1.SetSymbol()  # Ask player for symbol
+                self.P2.Sym = Symbols[int(not bool(Symbols.index(self.P1.Sym)))]  # Assign the other symbol
+                self.Cur = self.P2  # Set which player is the current player
+                self.Next = self.P1  # The other player is up next
+            else:
+                self.P2.SetSymbol()  # Ask player for symbol
+                self.P1.Sym = Symbols[int(not bool(Symbols.index(self.P2.Sym)))]  # Assign the other symbol
+                self.Cur = self.P1  # Set which player is the current player
+                self.Next = self.P2  # The other player is up next
+
+        else:
+            self.P1 = Player()  # Create player
+            self.P2 = Computer()  # Create computer
             self.P1.SetSymbol()  # Ask player for symbol
             self.P2.Sym = Symbols[int(not bool(Symbols.index(self.P1.Sym)))]  # Assign the other symbol
-            self.Cur = self.P2  # Set which player is the current player
-            self.Next = self.P1  # The other player is up next
-        else:
-            self.P2.SetSymbol()  # Ask player for symbol
-            self.P1.Sym = Symbols[int(not bool(Symbols.index(self.P2.Sym)))]  # Assign the other symbol
             self.Cur = self.P1  # Set which player is the current player
             self.Next = self.P2  # The other player is up next
 
@@ -121,10 +142,17 @@ Press ENTER to start! """, end="")
         input()
         print()
 
+    def Multiplayer(self):
+        return input("Would you like to play against a friend? (Yes/No): ").upper().startswith("Y")  # Ask if multiplayer
+
     def MakeMove(self):
-        Square = input("{}, what's your move? ".format(self.Cur))  # Ask player for move
-        while self.Board.Update(self.Cur.Sym, Square) is None:  # Validate move
-            Square = input("Sorry {}, you can't move there. Try again: ".format(self.Cur))  # If move is invalid
+        if self.Cur.Name == CPU:  # If the computer is making a move
+            Square = self.P2.ComputerMove(self.Board.Squares, self.P1.Sym)
+            print("{}'s move is {}.".format(CPU, Square))
+        else:  # A player is making a move
+            Square = input("{}, what's your move? ".format(self.Cur))  # Ask player for move
+            while self.Board.Update(self.Cur.Sym, Square) is None:  # Validate move
+                Square = input("Sorry {}, you can't move there. Try again: ".format(self.Cur))  # If move is invalid
 
         return self.Board.Update(self.Cur.Sym, Square)  # If move is valid
 
@@ -141,7 +169,7 @@ Press ENTER to start! """, end="")
 ================================
     {:<16} {:<7}    
     {:<16} {:<7}    
-================================""".format(self.P1, self.P1.Score, self.P2, self.P2.Score))
+================================""".format(self.P1.Name, self.P1.Score, self.P2.Name, self.P2.Score))
 
     def SwitchTurn(self):
         self.Cur, self.Next = self.Next, self.Cur  # Make the current player next and the next player current
@@ -185,16 +213,6 @@ class Board:
         return None
 
     def IsWinner(self, Player):  # Determine if the given player is the winner
-        PossibleWins = [
-            ["7", "8", "9"],
-            ["4", "5", "6"],
-            ["1", "2", "3"],
-            ["7", "4", "1"],
-            ["8", "5", "2"],
-            ["9", "6", "3"],
-            ["7", "5", "3"],
-            ["1", "5", "9"]
-        ]  # All possible ways to win
         for X, Y, Z in PossibleWins:  # For each square in every possible win
             if self.Squares[X] == self.Squares[Y] == self.Squares[Z] == Player.Sym:  # If all squares in a row contain the player's symbol
                 self.Squares[X] = self.Squares[Y] = self.Squares[Z] = (Player.Sym + "̲")  # Mark the symbols with an underline
@@ -223,8 +241,20 @@ class Board:
 
 class Player:
 
-    def __init__(self, Number):
-        self.Name = input("What's player {}'s name? ".format(Number))  # Ask for player name
+    def __init__(self, Number=0):
+        if Number == 0:  # If the player is the only player
+            self.Name = input("What is your name? ")  # Ask for player name
+            while self.Name == "CPU":  # Easter Egg
+                global CPU
+                print()
+                print("You found an Easter Egg!")
+                CPU = input("Enter new computer name: ")  # Redefine "CPU" constant
+                print()
+                self.Name = input("What is your name? ")
+
+        else:  # There are multiple players
+            self.Name = input("What's player {}'s name? ".format(Number))  # Ask for player name
+
         self.Sym = ""  # Initialize the player's symbol
         self.Score = 0  # Set the score to 0 wins
 
@@ -245,49 +275,67 @@ class Player:
         self.Sym = Symbol  # If symbol is valid
 
 class Computer:
-    
+
     def __init__(self):
-        self.Name =  input("What is the computer's name?") # Ask for computer's name
+        self.Name = CPU  # Set computer name to "CPU" constant
         self.Sym = ""  # Initialize the computer's symbol
         self.Score = 0  # Set the score to 0 wins
 
     def __str__(self):
         return self.Name  # Return computer's name when referenced without properties
-    
-    def SetSymbol(self, Symbol): 
-        if Player.Sym == "X" # Checks the player's symbol
-            self.Sym = "O"
+
+    def ValidSquare(self, Squares, Square):
+        if Square in Squares and Squares[Square] == " ":  # If the given square exists and is blank
+            return True  # Square is valid move
+
+        return False  # Square is invalid move
+
+    def SimulateMove(self, Squares, Symbol, Square):  # Simulate how the board would look after move
+        Squares[Square] = Symbol  # Place the player's symbol on the board in the correct square
+        return Squares  # Return the layout of the board
+
+    def SimulateWinner(self, Squares, Symbol):  # Simulate a win
+        for X, Y, Z in PossibleWins:  # For each square in every possible win
+            if Squares[X] == Squares[Y] == Squares[Z] == Symbol:  # If all squares in a row contain the player's symbol
+                return True  # The player can win
+
+        return False  # The player can't win
+
+    def RandomMove(self, Squares, MoveList):  # Generate a random move from a given list
+        PossibleMoves = []
+        for I in MoveList:  # Create new list from "MoveList" excluding impossible moves
+            if self.ValidSquare(Squares, I):
+                PossibleMoves.append(I)
+
+        if len(PossibleMoves) != 0:
+            return random.choice(PossibleMoves)
         else:
-            self.Sym = "X"
-            
-   def getComputerMove(board, computerLetter):
-    
-    for i in range(1, 10):
-        copy = getBoardCopy(board) # Looks at the Board
-        if isSpaceFree(copy, i):
-            makeMove(copy, computerLetter, i)
-            if isWinner(copy, computerLetter):
-                return i
+            return None
 
-    # Check if the player could win on his next move, and block them.
-    for i in range(1, 10):
-        copy = getBoardCopy(board)
-        if isSpaceFree(copy, i):
-            makeMove(copy, playerLetter, i)
-            if isWinner(copy, playerLetter):
-                return i
+    def ComputerMove(self, Squares, S1):
+        for I in Squares:  # First, check if the computer can win in the next move
+            Copy = dict(Squares)
+            if self.ValidSquare(Copy, I):
+                self.SimulateMove(Copy, self.Sym, I)
+                if self.SimulateWinner(Copy, self.Sym):
+                    return I
 
-    
-    move = chooseRandomMoveFromList(board, [1, 3, 7, 9])
-    if move != None:
-        return move # Tries to take one of the corners.
+        for I in Squares:  # Check if the player could win on his next move, and block them
+            Copy = dict(Squares)
+            if self.ValidSquare(Copy, I):
+                self.SimulateMove(Copy, S1, I)
+                if self.SimulateWinner(Copy, S1):
+                    return I
 
-    
-    if isSpaceFree(board, 5): 
-        return 5 # Tries to take the center.
+        Move = self.RandomMove(Squares, ["1", "3", "7", "9"])
+        if Move is not None:
+            return Move  # Tries to take one of the corners
 
-    
-    return chooseRandomMoveFromList(board, [2, 4, 6, 8]) # If the computer cannot take the center or any corners, goes to one of the sides
+        if self.ValidSquare(Squares, "5"):
+            return "5"  # Tries to take the center
+
+        return self.RandomMove(Squares, ["2", "4", "6", "8"]) # Tries to take one of the sides
+
 
 # Main
 G = Game()  # Create new game
