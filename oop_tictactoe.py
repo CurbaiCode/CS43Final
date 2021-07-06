@@ -22,9 +22,9 @@ Welcome to Tic-Tac-Toe!
 
 ##/ The Screen /#########################
 
-                        You can place a 
-            symbol in this empty square 
-         /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                        You can place a  
+            symbol in this empty square  
+         /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
         /     You can't move in 
        /     an occupied square 
       /   /¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯         7 | 8 | 9  
@@ -33,9 +33,9 @@ Welcome to Tic-Tac-Toe!
    | {0}̲ | {0}     like a numeric keypad  / ---+---+--- 
 ---+---+--- <¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   1 | 2 | 3  
  {1} | {1} | {0}̲  
-          \        When the game is won, the 
-           \  winning symbols are underlined 
-            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+          \        When the game is won, the  
+           \  winning symbols are underlined  
+            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
 Press ENTER to continue... """.format(Symbols[0], Symbols[1]), end="")
     input()
     print("""
@@ -119,7 +119,8 @@ class Game:
 
     def Menu(self):  # Main menu
         global Symbols
-        print("""{0}{0}{0}{0}{0}{0} {1}{1}       {1}{1}{1}{1}{1}{1}            {0}{0}{0}{0}{0}{0}            
+        print("""
+{0}{0}{0}{0}{0}{0} {1}{1}       {1}{1}{1}{1}{1}{1}            {0}{0}{0}{0}{0}{0}            
   {0}{0}              {1}{1}                {0}{0}         {0}{0}{0}{0} 
   {0}{0}   {1}{1}  {0}{0}{0}{0}   {1}{1}  {0}{0}{0} {0}  {1}{1}{1}{1}   {0}{0}  {1}{1}{1}{1}  {0}{0}  {0}{0}
   {0}{0}   {1}{1} {0}{0}      {1}{1} {0}{0}  {0}{0} {1}{1}      {0}{0} {1}{1}  {1}{1} {0}{0}{0}{0}  
@@ -144,9 +145,14 @@ class Game:
         elif Selection == "0":  # Easter Egg
             print()
             print("You found an Easter Egg!")
-            Symbols = input("Enter new symbols separated by a space e.g. \"X O\": ").upper().split(" ")  # Redefine "Symbols" constant
-            print()
-            self.Menu()  # Go back to main menu
+            while True:
+                try:
+                    Symbols = input("Enter new symbols separated by a space e.g. \"X O\": ").upper().split(" ")  # Redefine "Symbols" constant
+                    Symbols = [Symbol[0] for Symbol in Symbols]  # Get first character of each string
+                    self.Menu()  # Go back to main menu
+                except:
+                    pass
+
         else:
             print("An unexpected error has occurred.")
 
