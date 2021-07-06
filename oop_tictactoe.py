@@ -76,8 +76,7 @@ def Multiplayer():
     return input("Would you like to play against a friend? (Yes/No): ").upper().startswith("Y")  # Ask if multiplayer
 
 def DonePlaying():  # Ask if the players want to play another round
-    print()
-    return not input("Do you want to play again? (Yes/No): ").upper().startswith("Y")
+    return not input("\nDo you want to play again? (Yes/No): ").upper().startswith("Y")
 
 # Classes
 class Game:
@@ -143,16 +142,10 @@ class Game:
         elif Selection == "3":  # "Exit"
             raise SystemExit
         elif Selection == "0":  # Easter Egg
-            print()
-            print("You found an Easter Egg!")
-            while True:
-                try:
-                    Symbols = input("Enter new symbols separated by a space e.g. \"X O\": ").upper().split(" ")  # Redefine "Symbols" constant
-                    Symbols = [Symbol[0] for Symbol in Symbols]  # Get first character of each string
-                    self.Menu()  # Go back to main menu
-                except Exception:
-                    pass
-
+            print("\nYou found an Easter Egg!")
+            Symbols = input("Enter new symbols separated by a space e.g. \"X O\": ").upper().split(" ")  # Redefine "Symbols" constant
+            Symbols = [Symbol[0] for Symbol in Symbols]  # Get first character of each string
+            self.Menu()  # Go back to main menu
         else:
             print("An unexpected error has occurred.")
 
@@ -253,11 +246,9 @@ class Player:
             self.Name = input("What is your name? ")  # Ask for player name
             while self.Name == "CPU":  # Easter Egg
                 global CPU
-                print()
-                print("You found an Easter Egg!")
+                print("\nYou found an Easter Egg!")
                 CPU = input("Enter new computer name: ")  # Redefine "CPU" constant
-                print()
-                self.Name = input("What is your name? ")
+                self.Name = input("\nWhat is your name? ")
 
         else:  # There are multiple players
             self.Name = input("What's player {}'s name? ".format(Number))  # Ask for player name
