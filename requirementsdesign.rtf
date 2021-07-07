@@ -2,7 +2,7 @@
 {\fonttbl\f0\froman\fcharset0 TimesNewRomanPSMT;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
-\margl1440\margr1440\vieww10820\viewh17060\viewkind1
+\margl1440\margr1440\vieww19200\viewh18160\viewkind1
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ri-1434\pardirnatural\partightenfactor0
 
 \f0\fs24 \cf0 \
@@ -23,11 +23,11 @@
 \b0\fs24 \cf0 \
 Rules:\
 \
-The game is played on board consisting of a 3 by 3 grid with 9 squares as possible moves. Players are not allowed to place their symbol in a square that is already marked with a symbol. The first of two human players to get 3 of their symbols (X or O) in a row (up, down, across, or diagonally) is the winner and the game is over. If there is no winner when all 9 squares are full, it is a draw and the game is over.\
+The game is played on a board consisting of a 3 by 3 grid with 9 squares as possible moves. Players are only allowed to place their symbol in an unmarked square, whether it has their own symbol or their opponent's. The first of two players, human vs. human or human vs. machine, to get 3 of their symbols (X or O) in a row (down, across, or diagonally) is the winner and the game is over. If there is no winner when all 9 squares are full, it is a draw and the game is over.\
 \
 Gameplay:\
 \
-Players choose between X and O to use as their move marker. After deciding which player is to go first, the starting player is allowed to mark any square. The game continues with the players taking turns marking squares. If there is no winner, then is a draw. When all 9 squares are full, the game is over. If neither player has placed 3 marks in a row, the game ends in a draw.\
+The player first chooses if they wish to play against a friend or the computer. Players then choose between X and O to use as their move marker. After deciding which player is to go first, the starting player is allowed to mark any square, since they are all blank. The game continues with the players taking turns marking squares one symbol at a time. If there is no winner, then is a draw. When all 9 squares are full, the game is over. If neither player has placed 3 marks in a row, the game ends in a draw. The player that causes the draw or win goes second in the next round.\
 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ri-1434\pardirnatural\partightenfactor0
 
@@ -37,17 +37,17 @@ Players choose between X and O to use as their move marker. After deciding which
 \b0\fs24 \cf0 \
 Classes:\
 \
-Game \'96 Prepare game, get players' names and symbols, and keep players' score. Board \'96 Display current state of board, determine if move is legal, update the board with newest move, and check for winning move. Player \'96 Swap turns, and get move. Computer \'96 Get's a move, and check for winning move.\
+Game \'96 Prepare and handle game events, display menus, create and get players' names and symbols and moves, keep players' score, and switch turns. Board \'96 Start completely blank, display the current state of board, determine if move is legal, update the board with newest move, check for winning move, check if board is full and results in a draw, and reset for new round. Player \'96 Get player's names and symbols, and start score at 0. Computer \'96 Start score at 0, simulate possibilities of moves and determine the best move.\
 \
 Objects:\
 \
-Game \'96\'a0Created from Game class and created for each new game. Board. Player 1 \'96\'a0Created from Player class. Player 2 \'96\'a0Created from Player class. Computer \'96\'a0Created from Computer class.\
+Game \'96\'a0Created from Game class, created for each new game, and handles most dynamic functions. Board \'96 Created from Board class, used to display and update board when needed. Player 1 \'96\'a0Created from Player class, and used to track progress of player in each game. Player 2 \'96\'a0Created from Player class when game in multiplayer mode, and is identical to Player 1. Computer \'96\'a0Created from Computer class when game in single player mode, and copies board to algorithmically simulates all possibilities.\
 \
 Functions:\
 \
-Create empty board, start the game, status of the game, and restart the game\
+Ask for input for various tasks; validate moves, symbols, and selections; generate instructions; construct menus; display the scoreboard; determine the status of the game (win or draw); and reset the game.\
 \
 Algorithms:\
 \
-Detect if a square is free, detect if move is valid, detect if either player has won (three marks in horizontal, vertical or diagonal row), detect a tie, and keep score.\
+Allow the computer to determine the best move to make by copying the current board and choosing to first win the game, blocking the opponent, taking the corners, taking the middle, and lastly taking the sides. Detect if a square is free, detect if move is valid, detect if either player has won (three marks down, across, or diagonal in a row), detect a tie, and keep score.\
 }
