@@ -31,4 +31,4 @@ If you have any questions, there are in-game instructions. Just enter `2` at the
 ## Authors
 
  * **Mr-Dylan-Man** - ([GitHub](https://github.com/Mr-Dylan-Man/))
- * **Fred-Doug** - ([GitHub](https://github.com/Fred-Doug/))
+ * **CurbaiCode** - ([GitHub](https://github.com/CurbaiCode/))
