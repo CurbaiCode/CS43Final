@@ -16,7 +16,7 @@ This project uses the Python 3 syntax. Most operating systems come with Python p
 
  1. Clone the repo
 
-        git clone https://github.com/Fred-Doug/CS43Final.git
+        git clone https://github.com/CurbaiCode/CS43Final.git
 
  2. Run the file `oop_tictactoe.py`
 
